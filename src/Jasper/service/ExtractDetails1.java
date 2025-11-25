@@ -32,7 +32,7 @@ public class ExtractDetails1 {
         Map<String, List<DetalleRol>> egresosMap = new HashMap<>();
         Map<String, List<DetalleRol>> descuentosMap = new HashMap<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(Queries.QUERY_ROLES_PRINCIPALES)) {
+        try (PreparedStatement stmt = connection.prepareStatement(QueryLoader.getQuery("QUERY_ROLES_PRINCIPALES"))) {
             // Parámetros en el orden exacto de tu consulta original
             stmt.setString(1, codInforme);    // :cod_inf
             stmt.setString(2, codInforme);    // :cod_inf
