@@ -14,7 +14,7 @@ import java.util.Map;
 public class Main1 {
     
     // PARÁMETROS DEL SISTEMA - Configura estos valores según tu entorno
-    private static final String CIA_CODE = "001";      // Código de compañía
+    private static final String CIA_CODE = "01";      // Código de compañía
     private static final String TIPO_ROL = "001";      // Código del tipo de rol
     private static final String COD_INFORME = "001";   // Código del informe
     private static final String COD_CEN = "000";       // Centro de costo (000 = todos)
