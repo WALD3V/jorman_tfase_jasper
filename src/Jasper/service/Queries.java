@@ -80,7 +80,7 @@ tb_rol_vista_maestro.cia_codigo =:cia
 and (tb_rol_empleado.codcen=:codcen or :codcen='000')
 ORDER BY tb_rol_empleado.codcen Asc ,   
          tb_rol_empleado.emp_apellidos Asc,
-	        tb_rol_empleado.emp_nombres Asc""";
+	        tb_rol_empleado.emp_nombres Asc;""";
 
 
 
