@@ -48,8 +48,8 @@ public class ExtractDetails1 {
             stmt.setString(12, codCen);       // :codcen
             stmt.setString(13, codCen);       // :codcen
 
-            println("Ejecutando QUERY_ROLES_PRINCIPALES con parámetros:");
-            println("datos " + codInforme + ", " + ciaCode + ", " + tipoRol + ", " + empInicial + ", " + empFinal + ", " + codCen);   
+            System.out.print("Ejecutando QUERY_ROLES_PRINCIPALES con parámetros:");
+            System.out.print("datos " + codInforme + ", " + ciaCode + ", " + tipoRol + ", " + empInicial + ", " + empFinal + ", " + codCen);   
 
 
             ResultSet rs = stmt.executeQuery();
