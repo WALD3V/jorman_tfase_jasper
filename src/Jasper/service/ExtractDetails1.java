@@ -107,6 +107,13 @@ public class ExtractDetails1 {
             throw e;
         }
 
+        // Cargar ingresos, egresos y descuentos
+        if (!rolesMap.isEmpty()) {
+            cargarIngresos(connection, rolesMap, empInicial, empFinal, ciaCode, codInforme);
+            cargarEgresos(connection, rolesMap, empInicial, empFinal, ciaCode, codInforme);
+            cargarDescuentos(connection, rolesMap, empInicial, empFinal, ciaCode, codInforme);
+        }
+
         return rolesMap;
     }
 
@@ -121,5 +128,124 @@ public class ExtractDetails1 {
         Map<String, RolGeneral> roles = getAllRolesByParametros(connection, empCodigo, empCodigo,
                 ciaCode, tipoRol, codInforme, codCen);
         return roles.get(empCodigo);
+    }
+
+    /**
+     * Carga los ingresos para los empleados en el rango especificado
+     */
+    private static void cargarIngresos(Connection connection, Map<String, RolGeneral> rolesMap,
+            String empInicial, String empFinal, String ciaCode, String codInforme) throws SQLException {
+
+        try (PreparedStatement stmt = connection.prepareStatement(QueryLoader.getQuery("QUERY_INGRESOS"))) {
+            stmt.setString(1, empInicial);
+            stmt.setString(2, empFinal);
+            stmt.setString(3, codInforme);
+            stmt.setString(4, "I");
+            stmt.setString(5, ciaCode);
+            stmt.setString(6, empInicial);
+            stmt.setString(7, empFinal);
+            stmt.setString(8, codInforme);
+            stmt.setString(9, "I");
+            stmt.setString(10, ciaCode);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                double valor = rs.getDouble("valor");
+                String descripcion = rs.getString("esm_descripcion");
+
+                if (valor != 0) {
+                    // Buscar el RolGeneral correspondiente y agregar el ingreso
+                    for (RolGeneral rol : rolesMap.values()) {
+                        DetalleRol detalle = new DetalleRol(rol.getEmpCodigo(), descripcion, "I",
+                                "Referencia", valor, 0.0);
+                        rol.getIngresos().add(detalle);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al cargar ingresos: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * Carga los egresos para los empleados en el rango especificado
+     */
+    private static void cargarEgresos(Connection connection, Map<String, RolGeneral> rolesMap,
+            String empInicial, String empFinal, String ciaCode, String codInforme) throws SQLException {
+
+        try (PreparedStatement stmt = connection.prepareStatement(QueryLoader.getQuery("QUERY_EGRESOS"))) {
+            stmt.setString(1, empInicial);
+            stmt.setString(2, empFinal);
+            stmt.setString(3, "E");
+            stmt.setString(4, codInforme);
+            stmt.setString(5, ciaCode);
+            stmt.setString(6, empInicial);
+            stmt.setString(7, empFinal);
+            stmt.setString(8, "E");
+            stmt.setString(9, codInforme);
+            stmt.setString(10, ciaCode);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                double valor = rs.getDouble("valor");
+                String descripcion = rs.getString("esm_descripcion");
+
+                if (valor != 0) {
+                    // Buscar el RolGeneral correspondiente y agregar el egreso
+                    for (RolGeneral rol : rolesMap.values()) {
+                        DetalleRol detalle = new DetalleRol(rol.getEmpCodigo(), descripcion, "E",
+                                "Referencia", valor, 0.0);
+                        rol.getEgresos().add(detalle);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al cargar egresos: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * Carga los descuentos para los empleados en el rango especificado
+     */
+    private static void cargarDescuentos(Connection connection, Map<String, RolGeneral> rolesMap,
+            String empInicial, String empFinal, String ciaCode, String codInforme) throws SQLException {
+
+        try (PreparedStatement stmt = connection.prepareStatement(QueryLoader.getQuery("QUERY_DESCUENTO_TOTAL"))) {
+            stmt.setString(1, empInicial);
+            stmt.setString(2, empFinal);
+            stmt.setString(3, codInforme);
+            stmt.setString(4, ciaCode);
+            stmt.setString(5, empInicial);
+            stmt.setString(6, empFinal);
+            stmt.setString(7, codInforme);
+            stmt.setString(8, ciaCode);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                double valorDescuento = rs.getDouble("DESCUENTO");
+
+                // Distribuir el descuento entre todos los empleados
+                if (valorDescuento != 0) {
+                    double descuentoPorEmpleado = valorDescuento / rolesMap.size();
+
+                    for (RolGeneral rol : rolesMap.values()) {
+                        DetalleRol detalle = new DetalleRol(rol.getEmpCodigo(), "Descuento Total", "D",
+                                "Referencia", Math.abs(descuentoPorEmpleado), 0.0);
+                        rol.getDescuentos().add(detalle);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al cargar descuentos: " + e.getMessage());
+            throw e;
+        }
     }
 }
