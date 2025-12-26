@@ -2,19 +2,17 @@ package Jasper.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Month;
-import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Clase que representa los detalles del rol de un empleado.
+ * Los totales vienen calculados directamente de las queries SQL.
  */
 public class RolGeneral {
 
     private String periodoAnio;
-    private int periodoMes;
+    private String periodoMes;
     private String fechaCorte;
     private String fechaInicio;
     private String fechaFin;
@@ -22,79 +20,24 @@ public class RolGeneral {
     private String empNombres;
     private String empApellidos;
     private String empFuncion;
-    private double sumaI;
-    private double sumaE;
-    private double sumaD;
+    private String descripcionTipoRol;
+    private String ciaDescripcion;
     
-    
-    
-    public void setPeriodoAnio(String periodoAnio) {
-        this.periodoAnio = periodoAnio;
-    }
-    public void setPeriodoMes(int periodoMes) {
-        this.periodoMes = periodoMes;
-    }
-    public void setFechaCorte(String fechaCorte) {
-        this.fechaCorte = fechaCorte;
-    }
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-    public void setEmpCodigo(String empCodigo) {
-        this.empCodigo = empCodigo;
-    }
-    public void setEmpNombres(String empNombres) {
-        this.empNombres = empNombres;
-    }
-    public void setEmpApellidos(String empApellidos) {
-        this.empApellidos = empApellidos;
-    }
-    public void setEmpFuncion(String empFuncion) {
-        this.empFuncion = empFuncion;
-    }
-
-    public double getSumaI() {
-        return this.sumaI;
-    }
-
-    public void setSumaI(double sumaI) {
-        this.sumaI = sumaI;
-    }
-
-    public double getSumaE() {
-        return this.sumaE;
-    }
-
-    public void setSumaE(double sumaE) {
-        this.sumaE = sumaE;
-    }
-
-    public double getSumaD() {
-        return this.sumaD;
-    }
-
-    public void setSumaD(double sumaD) {
-        this.sumaD = sumaD;
-    }
-    public void setIngresos(List<DetalleRol> ingresos) {
-        this.ingresos = ingresos;
-    }
-    public void setEgresos(List<DetalleRol> egresos) {
-        this.egresos = egresos;
-    }
-    public void setDescuentos(List<DetalleRol> descuentos) {
-        this.descuentos = descuentos;
-    }
+    // Totales calculados por las queries SQL
+    private double totalIngresos = 0.0;
+    private double totalEgresos = 0.0;
+    private double netoAPagar = 0.0;
 
     private List<DetalleRol> ingresos;
     private List<DetalleRol> egresos;
-    private List<DetalleRol> descuentos; // Nueva lista para descuentos
+    private List<DetalleRol> descuentos;
 
-    // Constructor con todos los parámetros
-    public RolGeneral(String periodoAnio, int periodoMes, String fechaCorte, String fechaInicio, String fechaFin, String empCodigo, String empNombres, String empApellidos, String empFuncion, List<DetalleRol> ingresos, List<DetalleRol> egresos, List<DetalleRol> descuentos) {
+    // Constructor
+    public RolGeneral(String periodoAnio, String periodoMes, String fechaCorte,
+            String fechaInicio, String fechaFin, String empCodigo, String empNombres,
+            String empApellidos, String empFuncion, String descripcionTipoRol,
+            String ciaDescripcion, List<DetalleRol> ingresos, List<DetalleRol> egresos,
+            List<DetalleRol> descuentos) {
         this.periodoAnio = periodoAnio;
         this.periodoMes = periodoMes;
         this.fechaCorte = fechaCorte;
@@ -104,130 +47,90 @@ public class RolGeneral {
         this.empNombres = empNombres;
         this.empApellidos = empApellidos;
         this.empFuncion = empFuncion;
+        this.descripcionTipoRol = descripcionTipoRol;
+        this.ciaDescripcion = ciaDescripcion;
         this.ingresos = ingresos;
         this.egresos = egresos;
-        this.descuentos = descuentos; // Inicializar la nueva lista
+        this.descuentos = descuentos;
     }
 
-    // Métodos de acceso a los campos
-    public String getPeriodoAnio() {
-        return periodoAnio;
-    }
+    // Getters y Setters básicos
+    public String getPeriodoAnio() { return periodoAnio; }
+    public void setPeriodoAnio(String periodoAnio) { this.periodoAnio = periodoAnio; }
 
-    public String getPeriodoMes() {
-        String formattedMonth = String.format("%02d", periodoMes);
-        return formattedMonth;
-    }
+    public String getPeriodoMes() { return periodoMes; }
+    public void setPeriodoMes(String periodoMes) { this.periodoMes = periodoMes; }
+
+    public String getNombreMes() { return periodoMes; }
 
     public String getFechaCorte() {
-        String fechaFormateada = "";
-        String fechaOriginal = fechaCorte;
-        SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
-
-        try {
-            Date fecha = formatoEntrada.parse(fechaOriginal);
-            fechaFormateada = formatoSalida.format(fecha);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return fechaFormateada;
+        return formatearFecha(fechaCorte);
     }
+    public void setFechaCorte(String fechaCorte) { this.fechaCorte = fechaCorte; }
+
     public String getFechaInicio() {
-        String fechaFormateada = "";
-        String fechaOriginal = fechaInicio;
-        SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
-
-        try {
-            Date fecha = formatoEntrada.parse(fechaOriginal);
-            fechaFormateada = formatoSalida.format(fecha);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return fechaFormateada;
+        return formatearFecha(fechaInicio);
     }
+    public void setFechaInicio(String fechaInicio) { this.fechaInicio = fechaInicio; }
+
     public String getFechaFin() {
-        String fechaFormateada = "";
-        String fechaOriginal = fechaFin;
-        SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+        return formatearFecha(fechaFin);
+    }
+    public void setFechaFin(String fechaFin) { this.fechaFin = fechaFin; }
 
+    public String getEmpCodigo() { return empCodigo; }
+    public void setEmpCodigo(String empCodigo) { this.empCodigo = empCodigo; }
+
+    public String getEmpNombres() { return empNombres; }
+    public void setEmpNombres(String empNombres) { this.empNombres = empNombres; }
+
+    public String getEmpApellidos() { return empApellidos; }
+    public void setEmpApellidos(String empApellidos) { this.empApellidos = empApellidos; }
+
+    public String getEmpNombreCompleto() { return empNombres + " " + empApellidos; }
+
+    public String getEmpFuncion() { return empFuncion; }
+    public void setEmpFuncion(String empFuncion) { this.empFuncion = empFuncion; }
+
+    public String getDescripcionTipoRol() { return descripcionTipoRol; }
+    public void setDescripcionTipoRol(String descripcionTipoRol) { this.descripcionTipoRol = descripcionTipoRol; }
+
+    public String getCiaDescripcion() { return ciaDescripcion; }
+    public void setCiaDescripcion(String ciaDescripcion) { this.ciaDescripcion = ciaDescripcion; }
+
+    // Listas de detalles
+    public List<DetalleRol> getIngresos() { return ingresos; }
+    public void setIngresos(List<DetalleRol> ingresos) { this.ingresos = ingresos; }
+
+    public List<DetalleRol> getEgresos() { return egresos; }
+    public void setEgresos(List<DetalleRol> egresos) { this.egresos = egresos; }
+
+    public List<DetalleRol> getDescuentos() { return descuentos; }
+    public void setDescuentos(List<DetalleRol> descuentos) { this.descuentos = descuentos; }
+
+    // Totales calculados por las queries SQL
+    public double getTotalIngresos() { return totalIngresos; }
+    public void setTotalIngresos(double totalIngresos) { this.totalIngresos = totalIngresos; }
+
+    public double getTotalEgresos() { return totalEgresos; }
+    public void setTotalEgresos(double totalEgresos) { this.totalEgresos = totalEgresos; }
+
+    public double getNetoAPagar() { return netoAPagar; }
+    public void setNetoAPagar(double netoAPagar) { this.netoAPagar = netoAPagar; }
+
+    // Método auxiliar para formatear fechas
+    private String formatearFecha(String fecha) {
+        if (fecha == null) return "";
         try {
-            Date fecha = formatoEntrada.parse(fechaOriginal);
-            fechaFormateada = formatoSalida.format(fecha);
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaObj = formatoEntrada.parse(fecha);
+            return formatoSalida.format(fechaObj);
         } catch (ParseException e) {
-            e.printStackTrace();
+            return fecha; // Retorna la fecha original si no se puede formatear
         }
-        return fechaFormateada;
     }
-
-    public String getEmpCodigo() {
-        return empCodigo;
-    }
-
-    public String getEmpNombres() {
-        return empNombres;
-    }
-
-    public String getEmpNombreCompleto() {
-        String name = empNombres + " " + empApellidos;
-        return name;
-    }
-
-    public String getEmpApellidos() {
-        return empApellidos;
-    }
-
-    public String getEmpFuncion() {
-        return empFuncion;
-    }
-
-    public List<DetalleRol> getIngresos() {
-        return ingresos;
-    }
-
-    public List<DetalleRol> getEgresos() {
-        return egresos;
-    }
-
-    public List<DetalleRol> getDescuentos() {
-        return descuentos;
-    }
-
-    public double sumarIngresos() {
-        double suma = 0.0;
-        for (DetalleRol detalle : ingresos) {
-            sumaI += detalle.getValor();
-        }
-        return suma;
-    }
-
-    // Método para sumar egresos
-    public double sumarEgresos() {
-        double suma = 0.0;
-        for (DetalleRol detalle : egresos) {
-            sumaE += detalle.getValor();
-        }
-        return suma;
-    }
-
-    // Método para sumar egresos
-    public double sumarDescuentos() {
-        double suma = 0.0;
-        for (DetalleRol detalle : descuentos) {
-            sumaD += detalle.getValor();
-        }
-        return suma;
-    }
-
-    public double calcularBalance() {
-        return sumaI - sumaE - sumaD;
-    }
-
-    // Formateo de argumentos adicionales al objeto RolGeneral
-    public String getNombreMes() {
-        String nombreMes = Month.of(periodoMes).getDisplayName(TextStyle.FULL, new Locale("es")).toUpperCase();
-        return nombreMes;
-    }
+    
+    // Getter para compatibilidad con JasperReports (todo en minúsculas)
+    public double getNetoapagar() { return netoAPagar; }
 }

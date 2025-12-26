@@ -1,3 +1,4 @@
+-- Campos necesarios: valor, cia_codigo, esm_campo, emp_codigo, orden, tipo, totaliza, cod_informe
 SELECT         
 	ISNULL(  ( SELECT SUM( coalesce("tb_rol_vista_maestro"."valor",0) ) 
        FROM   "tb_rol_vista_maestro", "tb_rol_orden_de_impresion"  
@@ -23,3 +24,4 @@ ISNULL( ( SELECT  SUM( coalesce("tb_rol_vista_maestro_anexo"."valor",0) )
                   "tb_rol_orden_de_impresion"."cod_informe" =? and
 			"tb_rol_vista_maestro_anexo"."cia_codigo" = ?
      ) ,0)  AS DESCUENTO
+-- Retorna: DESCUENTO (suma total de descuentos)

@@ -24,9 +24,9 @@ public class JasperReportExample {
             String imagePath = "src/Jasper/resources/SampleIconImage.png";
             
 
-            rolGeneral.sumarIngresos();
-            rolGeneral.sumarEgresos();
-            rolGeneral.sumarDescuentos();
+            // Los totales ya vienen calculados de las queries SQL
+
+
 
             // Convertir el objeto en una lista (Jasper necesita una colección)
             List<RolGeneral> listaRol = Collections.singletonList(rolGeneral);

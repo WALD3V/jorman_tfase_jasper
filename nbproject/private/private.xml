@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/resources/.project</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/model/RolGeneral.java</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/config/DatabaseConnection1.java</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/model/DetalleRol.java</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/Main1.java</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/resources/jasperRolReport.jrxml</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/resources/sql/QUERY_ROLES_PRINCIPALES.sql</file>
+            <file>file:/C:/Users/Administrador/Documents/Red/jasper/src/Jasper/service/ExtractDetails1_Fixed.java</file>
+        </group>
     </open-files>
 </project-private>

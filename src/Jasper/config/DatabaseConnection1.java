@@ -9,7 +9,7 @@ public class DatabaseConnection1 {
     private static final String IP = "localhost";
     private static final String PUERTO = "2638";
     private static final String DATABASE = "mayekawa8"; // AGREGAR EL NOMBRE DE TU BASE DE DATOS
-    private static final String USUARIO = "DBA";
+    private static final String USUARIO = "dba";
     private static final String PASSWORD = "sql";
     
     public static Connection conectar(String ip, String puerto, String database, String usuario, String password) {

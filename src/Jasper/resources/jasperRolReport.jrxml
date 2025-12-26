@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.2100000000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="310"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#FFFFFF"/>
@@ -134,11 +134,13 @@
 	<field name="empFuncion" class="java.lang.String"/>
 	<field name="periodoMes" class="java.lang.String"/>
 	<field name="fechaCorte" class="java.lang.String"/>
-	<field name="sumaI" class="java.lang.Double"/>
-	<field name="sumaE" class="java.lang.Double"/>
-	<field name="sumaD" class="java.lang.Double"/>
 	<field name="fechaInicio" class="java.lang.String"/>
 	<field name="fechaFin" class="java.lang.String"/>
+	<field name="descripcionTipoRol" class="java.lang.String"/>
+	<field name="ciaDescripcion" class="java.lang.String"/>
+	<field name="totalIngresos" class="java.lang.Double"/>
+	<field name="totalEgresos" class="java.lang.Double"/>
+	<field name="netoapagar" class="java.lang.Double"/>
 	<variable name="fechaHoy" class="java.util.Date">
 		<variableExpression><![CDATA[new java.util.Date()]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.util.Date()]]></initialValueExpression>
@@ -149,12 +151,11 @@
 	<title>
 		<band height="184" splitType="Stretch">
 			<staticText>
-				<reportElement x="14" y="13" width="123" height="42"/>
+				<reportElement x="14" y="37" width="123" height="18"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sistema de nomina
-Rol ventas]]></text>
+				<text><![CDATA[modulo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="180" y="37" width="194" height="18"/>
@@ -253,7 +254,17 @@ Rol ventas]]></text>
 			<textField>
 				<reportElement x="171" y="55" width="212" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[ $F{fechaInicio} +" - " + $F{fechaFin}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechaInicio} +" - " + $F{fechaFin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="55" width="121" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{descripcionTipoRol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="17" width="121" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ciaDescripcion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -466,17 +477,17 @@ Rol ventas]]></text>
 			<textField pattern="#,##0.00 ">
 				<reportElement x="367" y="21" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{sumaE}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalEgresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00 ">
 				<reportElement x="175" y="21" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{sumaI}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalIngresos}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00 ">
 				<reportElement x="367" y="41" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{sumaI}-$F{sumaE}-$F{sumaD}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{netoapagar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

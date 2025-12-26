@@ -1,3 +1,4 @@
+-- Campos necesarios: emp_codigo, valor, cia_codigo, esm_campo, emp_nombres, emp_apellidos, tro_descripcion, mae_001, tro_anio, fun_codigo, codcen, tbl_codigo_per, emp_estado, cod_informe
 SELECT tb_rol_vista_maestro.emp_codigo,   
        tb_rol_vista_maestro.valor,   
        tb_rol_orden_de_impresion_tipo = (select tipo from tb_rol_orden_de_impresion where ( tb_rol_vista_maestro.cia_codigo = tb_rol_orden_de_impresion.cia_codigo ) and  
@@ -45,3 +46,4 @@ and (tb_rol_empleado.codcen=? or ?='000')
 ORDER BY tb_rol_empleado.codcen Asc ,   
          tb_rol_empleado.emp_apellidos Asc,
 	 tb_rol_empleado.emp_nombres Asc;
+-- Retorna: Información completa del rol incluyendo empleado, valores, descripción de conceptos, cargo, período, fechas y datos de la empresa

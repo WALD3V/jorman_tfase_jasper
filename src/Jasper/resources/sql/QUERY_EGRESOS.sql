@@ -1,3 +1,4 @@
+-- Campos necesarios: valor, esm_descripcion, orden, cia_codigo, esm_campo, emp_codigo, tipo, cod_informe
 SELECT "tb_rol_vista_maestro"."valor",   
        "tb_rol_estructura_maestro"."esm_descripcion",   
        "tb_rol_orden_de_impresion"."orden"  
@@ -31,3 +32,4 @@ WHERE ( "tb_rol_vista_maestro_anexo"."cia_codigo" = "tb_rol_orden_de_impresion".
      "tb_rol_orden_de_impresion"."tipo" = ? AND  
      "tb_rol_orden_de_impresion"."cod_informe" = ? and
 	 "tb_rol_vista_maestro_anexo"."cia_codigo" =?
+-- Retorna: valor, esm_descripcion, orden (egresos, descuentos u otros movimientos)
