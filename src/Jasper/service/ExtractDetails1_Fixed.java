@@ -246,7 +246,6 @@ public class ExtractDetails1_Fixed {
             }
         }
     }
-}
     private static void cargarTotalEgresos(Connection connection, Map<String, RolGeneral> rolesMap,
             String empInicial, String empFinal, String ciaCode, String codInforme) throws SQLException {
 
@@ -319,3 +318,4 @@ public class ExtractDetails1_Fixed {
             }
         }
     }
+}
