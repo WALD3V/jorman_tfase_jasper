@@ -298,14 +298,6 @@ public class ExtractDetails1_Fixed {
                 stmt.setString(14, empCodigo);
                 stmt.setString(15, codInforme);
                 stmt.setString(16, ciaCode);
-                stmt.setString(17, empCodigo);  // repetir para anexos
-                stmt.setString(18, empCodigo);
-                stmt.setString(19, codInforme);
-                stmt.setString(20, ciaCode);
-                stmt.setString(21, empCodigo);
-                stmt.setString(22, empCodigo);
-                stmt.setString(23, codInforme);
-                stmt.setString(24, ciaCode);
 
                 ResultSet rs = stmt.executeQuery();
                 RolGeneral rol = rolesMap.get(empCodigo);
