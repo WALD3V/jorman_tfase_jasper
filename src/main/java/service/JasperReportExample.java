@@ -13,6 +13,7 @@ import Jasper.model.RolGeneral;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import java.util.*;
+import java.io.ByteArrayOutputStream;
 
 public class JasperReportExample {
 
@@ -61,5 +62,35 @@ public class JasperReportExample {
         } catch (JRException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ByteArrayOutputStream generarReporteEnMemoria(RolGeneral rolGeneral) throws JRException {
+        // Ruta del archivo .jasper compilado
+        String jasperPath = "src/Jasper/resources/jasperRolReport.jasper";
+
+        // Convertir el objeto en una lista (Jasper necesita una colección)
+        List<RolGeneral> listaRol = Collections.singletonList(rolGeneral);
+
+        // Crear la fuente de datos para Jasper
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaRol);
+        JRBeanCollectionDataSource ingresosDataSource = new JRBeanCollectionDataSource(rolGeneral.getIngresos());
+        JRBeanCollectionDataSource egresosDataSource = new JRBeanCollectionDataSource(rolGeneral.getEgresos());
+        JRBeanCollectionDataSource descuentosDataSource = new JRBeanCollectionDataSource(rolGeneral.getDescuentos());
+
+        // Parámetros
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("REPORT_LOCALE", Locale.US);
+        parameters.put("ingresosDataSource", ingresosDataSource);
+        parameters.put("egresosDataSource", egresosDataSource);
+        parameters.put("descuentosDataSource", descuentosDataSource);
+
+        // Llenar el reporte
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperPath, parameters, dataSource);
+
+        // Exportar a ByteArrayOutputStream
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+        return outputStream;
     }
 }

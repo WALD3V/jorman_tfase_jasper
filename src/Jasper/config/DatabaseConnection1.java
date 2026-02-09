@@ -1,23 +1,20 @@
 package Jasper.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 import java.util.Properties;
 
 public class DatabaseConnection1 {
     
-    // Configuración para SQL Anywhere 8
-    private static final String IP = "localhost";
-    private static final String PUERTO = "2638";
-    private static final String DATABASE = "mayekawa8"; // AGREGAR EL NOMBRE DE TU BASE DE DATOS
-    private static final String USUARIO = "dba";
-    private static final String PASSWORD = "sql";
+    private static final Dotenv dotenv = Dotenv.load();
     
     public static Connection conectar(String ip, String puerto, String database, String usuario, String password) {
         Connection con = null;
         try {
-            System.out.println("=== Iniciando conexión a SQL Anywhere 8 ===");
+            System.out.println("=== Iniciando conexión a Sybase ===");
             System.out.println("IP: " + ip);
             System.out.println("Puerto: " + puerto);
+            System.out.println("Database: " + database);
             System.out.println("Usuario: " + usuario);
             
             System.out.println("Registrando driver Sybase...");
@@ -33,7 +30,7 @@ public class DatabaseConnection1 {
             System.out.println("Intentando conectar...");
             
             con = DriverManager.getConnection(url, props);
-            System.out.println("✓ CONEXIÓN EXITOSA a SQL Anywhere 8 en " + ip + ":" + puerto);
+            System.out.println("✓ CONEXIÓN EXITOSA a Sybase en " + ip + ":" + puerto);
             
         } catch (SQLException e) {
             System.out.println("✗ ERROR SQL: " + e.getMessage());
@@ -47,27 +44,32 @@ public class DatabaseConnection1 {
     }
     
     public static Connection getConnection() throws SQLException {
-        return conectar(IP, PUERTO, DATABASE, USUARIO, PASSWORD);
+        String host = dotenv.get("DB_HOST");
+        String port = dotenv.get("DB_PORT");
+        String database = dotenv.get("DB_NAME");
+        String username = dotenv.get("DB_USERNAME");
+        String password = dotenv.get("DB_PASSWORD");
+        
+        return conectar(host, port, database, username, password);
     }
     
     public static boolean testConnection() {
-        System.out.println("=== TEST DE CONEXIÓN SQL ANYWHERE 8 ===\n");
-        Connection con = conectar(IP, PUERTO, DATABASE, USUARIO, PASSWORD);
-        
-        if (con != null) {
-            System.out.println("\n=== Cerrando conexión ===");
-            try {
+        System.out.println("=== TEST DE CONEXIÓN SYBASE ===\n");
+        try {
+            Connection con = getConnection();
+            
+            if (con != null) {
+                System.out.println("\n=== Cerrando conexión ===");
                 con.close();
                 System.out.println("✓ Conexión cerrada correctamente");
                 return true;
-            } catch (SQLException e) {
-                System.out.println("✗ Error cerrando conexión: " + e.getMessage());
-                return false;
             }
-        } else {
-            System.out.println("\n✗ No se pudo establecer la conexión");
-            return false;
+        } catch (SQLException e) {
+            System.out.println("✗ Error en conexión: " + e.getMessage());
         }
+        
+        System.out.println("\n✗ No se pudo establecer la conexión");
+        return false;
     }
     
     public static void main(String[] args) {
@@ -75,3 +77,4 @@ public class DatabaseConnection1 {
         System.out.println("\n=== FIN DEL TEST ===");
     }
 }
+

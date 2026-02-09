@@ -19,8 +19,8 @@ public class Main1 {
     private static final String TIPO_ROL = "001";      // Código del tipo de rol
     private static final String COD_INFORME = "01";   // Código del informe (tiene 102,952.72 en valores)
     private static final String COD_CEN = "000";       // Centro de costo (000 = todos)
-    private static final String EMP_INICIAL = "016166644";   // Primer empleado con datos
-    private static final String EMP_FINAL = "2450075979";    // Último empleado con datos
+    private static final String EMP_INICIAL = "0920521226";   // Primer empleado con datos
+    private static final String EMP_FINAL = "0920521226";    // Último empleado con datos
     
     public static void main(String[] args) {
         try {
