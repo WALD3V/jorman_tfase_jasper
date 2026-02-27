@@ -90,16 +90,20 @@
             <version>1.2</version>
         </dependency>
 
-        <!-- Librerías personalizadas -->
+        <!-- Librerías personalizadas (referenciadas localmente, no requieren instalación) -->
         <dependency>
             <groupId>com.kabita</groupId>
             <artifactId>KabitaLib</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/librerias/KabitaLib.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sybase</groupId>
             <artifactId>jconn4d</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/librerias/jconn4d.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -108,6 +112,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

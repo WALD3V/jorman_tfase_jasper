@@ -1,109 +1,90 @@
 # Sistema de Generación de Reportes de Rol de Pagos
 
 ## 📋 Requisitos Previos
-- Java 8 o superior instalado
+
+- **Java 8** instalado (`java -version` debe funcionar)
+- **Maven 3.x** instalado (`mvn --version` debe funcionar)
 - Acceso a la base de datos Sybase
 
-## 📦 Archivos Incluidos
-```
-rol-pagos/
-├── rol-pagos-1.0.0.jar          # Aplicación principal
-├── .env                         # Configuración de base de datos
-├── ejecutar.bat                 # Script para Windows
-├── ejecutar.sh                  # Script para Linux/Mac
-├── README.md                    # Este archivo
-└── src/
-    └── Jasper/
-        └── resources/
-            └── jasperRolReport.jasper  # Template del reporte
-```
+---
 
-## ⚙️ Configuración
+## ⚙️ Configuración del archivo `.env`
 
-### 1. Editar archivo `.env`
-Abrir `.env` con un editor de texto y configurar los datos de tu base de datos:
+Edita el archivo `.env` con los datos de tu base de datos antes de ejecutar:
 
 ```env
-# Configuración de Base de datos Sybase
-DB_HOST=192.168.1.100          # IP del servidor Sybase
-DB_PORT=2638                   # Puerto de Sybase
-DB_NAME=tu_base_datos          # Nombre de la base de datos
-DB_USERNAME=tu_usuario         # Usuario de BD
-DB_PASSWORD=tu_password        # Contraseña de BD
-
-# Puerto del servidor web (opcional)
-SERVER_PORT=8081 // 8080
+DB_HOST=192.168.1.100     # IP del servidor Sybase
+DB_PORT=2638              # Puerto de Sybase
+DB_NAME=tu_base_datos     # Nombre de la base de datos
+DB_USERNAME=tu_usuario    # Usuario de BD
+DB_PASSWORD=tu_password   # Contraseña de BD
+SERVER_PORT=8081          # Puerto del servidor web
 ```
 
-## 🚀 Ejecución
+---
 
-### Windows:
-1. Hacer doble clic en `ejecutar.bat`
-2. O desde CMD: `ejecutar.bat`
+## 🔨 Compilar y generar el JAR
 
-### Linux/Mac:
-1. Abrir terminal en la carpeta
-2. Ejecutar: `./ejecutar.sh`
+Desde la raíz del proyecto, ejecuta:
 
-### Manual:
-```bash
-java -jar rol-pagos-1.0.0.jar
+```cmd
+mvn clean package -DskipTests
 ```
 
-## 🌐 Uso de la API
+> ✅ Al finalizar debes ver: `BUILD SUCCESS`  
+> 📁 El JAR se genera en: `target\rol-pagos-1.0.0.jar`
 
-Una vez iniciado, la aplicación estará disponible en:
+> ℹ️ Las librerías locales (`KabitaLib`, `jconn4d`) están en la carpeta `librerias\` y se incluyen automáticamente. No es necesario instalar nada manualmente.
+
+---
+
+## 🚀 Ejecutar la aplicación
+
+```cmd
+java -jar target\rol-pagos-1.0.0.jar
+```
+
+La aplicación estará disponible en:
 - **URL Base:** http://localhost:8081
 - **Health Check:** http://localhost:8081/api/reportes/health
+
+---
+
+## 🌐 Uso de la API
 
 ### Generar Reporte de Rol de Pagos
 
 **Endpoint:** `GET /api/reportes/rol-pagos`
 
-**Parámetros:**
-- `empInicial`: Código empleado inicial (ej: 0920521226)
-- `empFinal`: Código empleado final (ej: 0920521226)
-- `ciaCode`: Código de compañía (ej: 01)
-- `tipoRol`: Tipo de rol (ej: 001)
-- `codInforme`: Código de informe (ej: 01)
-- `codCen`: Centro de costo (ej: 000)
+| Parámetro    | Descripción             | Ejemplo      |
+|--------------|-------------------------|--------------|
+| `empInicial` | Código empleado inicial | `0920521226` |
+| `empFinal`   | Código empleado final   | `0920521226` |
+| `ciaCode`    | Código de compañía      | `01`         |
+| `tipoRol`    | Tipo de rol             | `001`        |
+| `codInforme` | Código de informe       | `01`         |
+| `codCen`     | Centro de costo         | `000`        |
 
 **Ejemplo:**
 ```
 http://localhost:8081/api/reportes/rol-pagos?empInicial=0920521226&empFinal=0920521226&ciaCode=01&tipoRol=001&codInforme=01&codCen=000
 ```
 
-**Respuesta JSON:**
-```json
-{
-  "total": 1,
-  "reportes": {
-    "0": {
-      "empCodigo": "0920521226",
-      "nombres": "Juan",
-      "apellidos": "Pérez",
-      "pdf": "JVBERi0xLjQKJeLjz9MK...",
-      "tamaño": 15234
-    }
-  }
-}
-```
+---
 
 ## 🔧 Solución de Problemas
 
-### Error de conexión a BD:
+### ❌ Puerto ocupado
+```cmd
+java -jar target\rol-pagos-1.0.0.jar --server.port=8082
+```
+
+### ❌ Error de conexión a BD
 1. Verificar que los datos en `.env` sean correctos
 2. Verificar que el servidor Sybase esté accesible
-3. Revisar logs en la consola
+3. Revisar los logs en la consola
 
-### Puerto ocupado:
-```bash
-java -jar rol-pagos-1.0.0.jar --server.port=8082
+### 🐛 Ver logs detallados
+```cmd
+java -jar target\rol-pagos-1.0.0.jar --logging.level.root=DEBUG
 ```
-
-### Ver logs detallados:
-```bash
-java -jar rol-pagos-1.0.0.jar --logging.level.root=DEBUG
-```
-
-
