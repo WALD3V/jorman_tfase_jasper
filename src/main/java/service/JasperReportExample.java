@@ -20,9 +20,9 @@ public class JasperReportExample {
     public static void generarReporte(RolGeneral rolGeneral, String fileName) {
         try {
             // Ruta del archivo .jasper compilado
-            String jasperPath = "src/main/resources/jasperRolReport.jasper";
+            String jasperPath = "src/resources/jasperRolReport.jasper";
             // ruta del logo de la empresa
-            String imagePath = "src/main/resources/SampleIconImage.png";
+            String imagePath = "src/resources/SampleIconImage.png";
 
             // Los totales ya vienen calculados de las queries SQL
 
@@ -65,7 +65,7 @@ public class JasperReportExample {
 
     public static ByteArrayOutputStream generarReporteEnMemoria(RolGeneral rolGeneral) throws JRException {
         // Ruta del archivo .jasper compilado
-        String jasperPath = "src/Jasper/resources/jasperRolReport.jasper";
+        String jasperPath = "src/resources/jasperRolReport.jasper";
 
         // Convertir el objeto en una lista (Jasper necesita una colección)
         List<RolGeneral> listaRol = Collections.singletonList(rolGeneral);
